@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ShinyDataSHIELD</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Xavier Escribà Montagut" />
+    <meta name="date" content="2021-11-15" />
+    <script src="conference_slides_files/header-attrs-2.11/header-attrs.js"></script>
+    <link href="conference_slides_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="conference_slides_files/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide, middle
+background-image: url(images/prbb.jpg)
+background-position: right 
+background-size: contain
+
+
+
+&lt;style type="text/css"&gt;
+.title-slide h2 {
+  font-size: 1.35em;
+}
+.center2 {
+  position: relative;
+  top: 50%;
+  transform: translateY(25%);
+}
+.hide-count .remark-slide-number {
+  display: none;
+}
+.black-count .remark-slide-number {
+  color: black;
+}
+div.my-footer span {
+    font-size: 10pt;
+    color: black;
+    position: absolute;
+    left: 25px;
+    bottom: 2px;
+}
+&lt;/style&gt;
+
+
+
+.pull-left[
+
+# ShinyDataSHIELD
+
+## An R Shiny application to perform federated non-disclosive data analysis in multi-cohort studies
+
+### Xavier Escribà Montagut
+
+### DataSHIELD conference, 11th of November 2021
+
+]
+
+---
+
+## Outline
+
+.pull-left[
++ **What is ShinyDataSHIELD?**
++ **Motivation**
+  + Why ShinyDataSHIELD?
+  + User target
++ **Technologies used**
+  + DataSHIELD + Opal
+  + R Shiny
+  + Docker
++ **Methods implemented (by package)**
+  + dsBase
+  + dsSurvival
+  + dsOmics
+  + Miscellaneous
+]
+
+.pull-right[
++ **Deployment options**
+  + Local
+  + VM
+  + Docker
++ **Live demo**
++ **Results**
++ **Future enhancements**
+]
+
+---
+
+## What is ShinyDataSHIELD?
+
+.pull-left[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/gui.PNG" alt="ShinyDataSHIELD interface" width="95%" /&gt;
+&lt;p class="caption"&gt;ShinyDataSHIELD interface&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+`$$\\[1.4in]$$`
+*ShinyDataSHIELD is a graphical user interface to interact with the DataSHIELD + Opal infrastructure. It's operation does not require knowledge of R or DataSHIELD functions.*
+]
+
+---
+
+## Motivation
+
+.pull-left[
+.mybox[
+**Why?**
++ Shorten technical gap
++ Enable quick prototyping
++ Easy data exploration and visualization
+]
+]
+
+.pull-right[
+.mybox[
+**User target**
++ Experienced DataSHIELD researchers
+  + Quick prototyping before analysis
++ Non-experienced DataSHIELD researchers
+  + Hypothesis testing without depending on a researcher experienced in DataSHIELD
++ General public interested in DataSHIELD
+  + Platform to explore the capabilities and performance of DataSHIELD. Help adoption!
+]
+]
+  
+---
+
+## Technologies used
+
+.panelset[
+    
+.panel[.panel-name[DataSHIELD + Opal]
+
+The *current* implementation is only compatible with a DataSHIELD + Opal architecture, as it makes use of many `opalr` commands to function. Maybe it could be expanded to work with DataSHIELD + Molgenis Armadillo if researchers are interested.
+
+`$$\\[0.7in]$$`
+
+&lt;img src="images/logosDSOpal.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[R Shiny]
+
+.pull-left[
+.mybox[
++ Build web applications using R!
++ Have an R server backend:
+  + Run analysis pipelines (R scripts!)
+  + Automate display of results using R figures and tables (*ggplot* / *gt* / *DT* / ...)
+  + *In our case:* Connect the backend server to the Opal(s)
++ Provide a code-less experience for the user
+]
+]
+
+.pull-right[
+&lt;img src="images/shiny.png" width="75%" style="display: block; margin: auto;" /&gt;
+]
+]
+    
+.panel[.panel-name[Docker]
+
+.pull-left[
+.mybox[
++ Put a service on a container:
+  + 101 Explanation: Like creating a mini-computer with all the required packages to run the application. Completely agnostic of the host system packages. **Soft lie:** Like a virtual machine but much more lightweight.
++ Easy deployment of ShinyDataSHIELD 
++ Provided Dockerfile to build your own image + Image hosted on DockerHub
+]
+]
+
+.pull-right[
+&lt;img src="images/docker.png" width="75%" style="display: block; margin: auto;" /&gt;
+]
+]
+]
+
+---
+
+## Methods implemented (by package)
+
+.panelset[
+    
+.panel[.panel-name[dsBase]
+
+.pull-left[
+.mybox[
++ **Descriptive statistics:**
+  + Summary statistics (counts / quartiles / mean)
+  + Scatter plot
+  + Histogram
+  + Heatmap
+  + Boxplot
++ **Statistical modeling:**
+  + Generalized linear models (GLM)
+  + Generalized linear mixed effects models (GLMer)
+]
+]
+
+.pull-right[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/boxplot.png" alt="Figure generated using ShinyDataSHIELD" width="75%" /&gt;
+&lt;p class="caption"&gt;Figure generated using ShinyDataSHIELD&lt;/p&gt;
+&lt;/div&gt;
+]
+
+]
+    
+.panel[.panel-name[dsSurvival]
+
+.pull-left[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/survival_plot.png" alt="Figure generated using ShinyDataSHIELD" width="75%" /&gt;
+&lt;p class="caption"&gt;Figure generated using ShinyDataSHIELD&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+.mybox[
++ **Statistical modeling:**
+  + Survival analysis: Cox regression models
++ **Descriptive statistics:**
+  + Survival plots
+]
+]
+
+]
+    
+.panel[.panel-name[dsOmics]
+
+.pull-left[
+.mybox[
++ **Genomics:**
+  + Meta genome-wide association studies (GWAS)
+  + PLINK genome-wide association studies
++ **Other omics:**
+  + Linear Models for Microarray and RNA-Seq Data (Limma) models
++ **Descriptive statistics:**
+  + GWAS Manhattan plots
+]
+]
+
+.pull-right[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/manhattan.png" alt="Figure generated using ShinyDataSHIELD" width="75%" /&gt;
+&lt;p class="caption"&gt;Figure generated using ShinyDataSHIELD&lt;/p&gt;
+&lt;/div&gt;
+]
+
+]
+
+.panel[.panel-name[Miscellaneous]
+
+.pull-left[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/plot_editor.png" alt="Figure is a screenshot of ShinyDataSHIELD" width="55%" /&gt;
+&lt;p class="caption"&gt;Figure is a screenshot of ShinyDataSHIELD&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+.mybox[
++ **Column visualizer / editor:**
+  + Visualize the column classes of a data frame
+  + Transform column classes (when DataSHIELD allows it). Example: Factor column to numeric column
++ **Plot editor:**
+  + Text size
+  + X-axis text angle
+  + Title, subtitle and caption
+  + X-axis and Y-axis labels
+  + Custom legend
+  + Colour themes
+]
+]
+
+]
+]
+
+---
+
+class: black-count
+background-image: url(images/rothko.jpg)
+background-position: bottom
+background-size: contain
+
+## Deployment options
+
+&lt;div class="my-footer"&gt;&lt;span&gt;Mark Rothko No. 5/No. 22. 1950&lt;/span&gt;&lt;/div&gt; 
+
+`$$\\[0.2in]$$`
+
+My research center does not want / allow to host the application with Docker, am I doomed?
+
+--
+
+**No. I got your back.**
+
+--
+
++ You can run it on your own computer via **RStudio** (got to manage package dependencies, but not *impossible!*)
++ It can also be deployed using a traditional virtual machine + Shiny Server
++ You can use someone else instance!
+
+---
+
+## Live demo
+
+### Let's do some hands on DS analysis
+
+#### Descriptive analysis on tabular data
+
+#### GWAS analysis
+
+---
+
+## Results
+
++ The application itself.
++ A hosted demo (auto updated with the latest iteration) (https://datashield-demo.obiba.org/)
++ An online user guide (https://isglobal-brge.github.io/ShinyDataSHIELD_bookdown/)
++ A paper (waiting peer-reviewers comments):
+
+`$$\\[0.6in]$$`
+
+&lt;img src="images/paper2.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Future enhancements
+
+.pull-left[
+.mybox[
++ Translate the application to **shiny-modules**
+  + Enables easier development by other researchers
+  + Easier to include methods on the future
+  + Future-proof the application
++ Add more methods:
+  + From **dsBase** package
+  + From **dsOmics** package
+  + From new packages!
++ Update the figure editor to **esquisse**
+  + Better interface
+  + More personalization options
+]
+]
+
+.pull-right[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/research.png" alt="Source: xkcd comic #2268" width="65%" /&gt;
+&lt;p class="caption"&gt;Source: xkcd comic #2268&lt;/p&gt;
+&lt;/div&gt;
+]
+
+---
+
+class: hide-count
+background-image: url(images/bcn.jpeg)
+background-position: left 
+background-size: contain
+
+.pull-right[
+# Thank you
+
+## Any questions?
+
+`$$\\[1.6in]$$`
+
+#### If you'd like to help, feel free to test the application and submit bugs to the GitHub issues: https://github.com/isglobal-brge/ShinyDataSHIELD/issues
+
+#### Also, I'm open to inputs on features that should be added / human-computer interaction upgrades / ... Feel free to contact at: *xavier.escriba@isglobal.org*
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(images/logo.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 110px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
